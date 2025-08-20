@@ -1,219 +1,328 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Weather Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {
-      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
-      min-height: 100vh;
-    }
-    .d-flex justify-content-end mb-3{
-     align-items: center;
-    }
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-    .weather-card, .dashboard-card {
-      background: #fff;
-      border-radius: 1rem;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
-      padding: 2rem;
-      margin-top: 2rem;
-      transition: box-shadow 0.3s;
-    }
-    .weather-card:hover, .dashboard-card:hover {
-      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-    }
-    .weather-icon {
-      width: 80px;
-      margin-bottom: 1rem;
-    }
-    .btn-theme {
-      background-color: #0d6efd;
-      color: #fff;
-      border: none;
-    }
-    .btn-theme:hover {
-      background-color: #0b5ed7;
-      color: #fff;
-    }
-    .dashboard-card {
-      max-height: 300px;
-      overflow-y: auto;
-      margin-bottom: 2rem;
-    }
-    .table thead th {
-      background: #e3f2fd;
-      color: #0d6efd;
-      font-weight: 600;
-    }
-    .table-striped > tbody > tr:nth-of-type(odd) {
-      background-color: #f8f9fa;
-    }
-    .form-control:focus {
-      border-color: #0d6efd;
-      box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
-    }
-    .alert {
-      margin-top: 1rem;
-    }
-    @media (max-width: 767px) {
-      .weather-card, .dashboard-card {
-        padding: 1rem;
-      }
+:root {
+  --background-dark: #121212;
+  --card-dark: rgba(255, 255, 255, 0.05);
+  --border-dark: rgba(255, 255, 255, 0.1);
+  --text-light: #e0e0e0;
+  --text-primary: #8e24aa;
+  --text-secondary: #bdbdbd;
+  --accent-color: #8e24aa;
+  --accent-light: #ab47bc;
+  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --backdrop-blur: blur(10px);
+}
 
-    }
-    .btn{
-      align-items:center;
-    }
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--background-dark);
+  color: var(--text-light);
+  transition: background-image 0.5s ease-in-out;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 900px;
+  padding: 2.5rem;
+  background: var(--card-dark);
+  border-radius: 20px;
+  box-shadow: var(--card-shadow);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border: 1px solid var(--border-dark);
+  animation: fadeIn 1s ease-in-out;
+}
+
+h1 {
+  font-weight: 600;
+  color: var(--text-primary);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.btn {
+  border-radius: 50px;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-light);
+  border-color: var(--accent-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary {
+  background-color: #6a1b9a;
+  border-color: #6a1b9a;
+}
+
+.btn-secondary:hover {
+  background-color: #8e24aa;
+  border-color: #8e24aa;
+}
+
+.form-control {
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-dark);
+  color: var(--text-light);
+  transition: all 0.3s ease;
+}
+
+.form-control::placeholder {
+  color: var(--text-secondary);
+}
+
+.form-control:focus {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 0.25rem rgba(142, 36, 170, 0.25);
+  border-color: var(--accent-color);
+}
+
+.weather-container {
+  margin-top: 2rem;
+}
+
+.city-card {
+  padding: 2rem;
+  border-radius: 15px;
+  background: var(--card-dark);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: var(--backdrop-blur);
+  border: 1px solid var(--border-dark);
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.city-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.city-card h4 {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.city-card h5 {
+  color: var(--text-light);
+}
+
+.dashboard-scrollbar {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 15px;
+}
+
+.dashboard-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dashboard-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--accent-color);
+  border-radius: 10px;
+}
+
+.dashboard-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.alert {
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.alert-danger {
+  background-color: rgba(220, 53, 69, 0.1);
+  border-color: rgba(220, 53, 69, 0.3);
+  color: #dc3545;
+}
+
+.alert-warning {
+  background-color: rgba(255, 193, 7, 0.1);
+  border-color: rgba(255, 193, 7, 0.3);
+  color: #ffc107;
+}
+
+.alert-success {
+  background-color: rgba(40, 167, 69, 0.1);
+  border-color: rgba(40, 167, 69, 0.3);
+  color: #28a745;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.toggle-btn {
+  animation: pulse 2s infinite;
+}
+   
+  </style>
+</head>
+<body>
+  <div class="ball"></div>
+</body>
+</html>
+
   </style>
 </head>
 <body>
   <div class="container">
-   
-    <h1 class="text-center mt-4 mb-4 fw-bold text-primary">Weather Dashboard</h1>
-    <div class="row justify-content-center">
-      <div class="col-md-8 col-lg-6">
-        <form id="weatherForm" class="d-flex mb-4">
-          <input type="text" id="cityInput" class="form-control me-2" placeholder="Enter city name" required>
-          <button type="submit" class="btn btn-primary">Get Weather</button>
-        </form>
-         <div class="btn">
-            <a href="dashboard.html" class="btn btn-theme">View All Records</a>
-        </div>
-        <div id="weatherResult" class="weather-card text-center d-none">
-          <img id="weatherIcon" class="weather-icon" src="" alt="Weather Icon" style="display:none;">
-          <h2 id="cityName"></h2>
-          <h4 id="temperature"></h4>
-          <p id="description" class="lead"></p>
-          <button id="saveBtn" class="btn btn-success mt-3">Save Weather</button>
-        </div>
-        
-        
-        </div>
-        <div id="alertBox" class="alert alert-danger d-none"></div>
-        <div id="successBox" class="alert alert-success d-none"></div>
-      </div>
+    <div class="text-center mt-4">
+      <h1 class="fw-bold text-primary">🌦️ Weather Dashboard</h1>
+      <button class="btn btn-secondary toggle-btn" onclick="toggleView()">Toggle View</button>
+    </div>
+
+    <!-- Weather Search Section -->
+    <div id="searchSection" class="weather-container">
+      <form id="weatherForm" class="d-flex mb-3">
+        <input type="text" class="form-control me-2" id="cityInput" placeholder="Enter city" required />
+        <button type="submit" class="btn btn-primary">Get Weather</button>
+      </form>
+      <div id="weatherResult" class="text-center"></div>
+    </div>
+
+    <!-- Saved Weather Records Section -->
+    <div id="dashboardSection" class="weather-container" style="display:none">
+      <h3 class="fw-bold text-primary mb-3">📋 Saved Weather Records</h3>
+      <div class="dashboard-scrollbar" id="savedRecords"></div>
     </div>
   </div>
+
   <script>
-    const weatherForm = document.getElementById('weatherForm');
+    
+    const form = document.getElementById('weatherForm');
     const cityInput = document.getElementById('cityInput');
     const weatherResult = document.getElementById('weatherResult');
-    const cityName = document.getElementById('cityName');
-    const temperature = document.getElementById('temperature');
-    const description = document.getElementById('description');
-    const weatherIcon = document.getElementById('weatherIcon');
-    const saveBtn = document.getElementById('saveBtn');
-    const alertBox = document.getElementById('alertBox');
-    const successBox = document.getElementById('successBox');
-    const recordsTableBody = document.querySelector('#recordsTable tbody');
-    const downloadBtn = document.getElementById('downloadBtn');
+    const savedRecords = document.getElementById('savedRecords');
+    const searchSection = document.getElementById('searchSection');
+    const dashboardSection = document.getElementById('dashboardSection');
 
-    let currentCity = '';
-
-    weatherForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      alertBox.classList.add('d-none');
-      successBox.classList.add('d-none');
-      const city = cityInput.value.trim();
-      if (!city) return;
-      try {
-        const res = await fetch(`/weather/weather/${encodeURIComponent(city)}`);
-        const data = await res.json();
-        if (res.ok) {
-          currentCity = data.city;
-          cityName.textContent = data.city;
-          temperature.textContent = `Temperature: ${data.temperature} °C`;
-          description.textContent = data.description.charAt(0).toUpperCase() + data.description.slice(1);
-          weatherIcon.src = `https://openweathermap.org/img/wn/01d@2x.png`;
-          weatherIcon.style.display = 'block';
-          weatherResult.classList.remove('d-none');
-        } else {
-          weatherResult.classList.add('d-none');
-          alertBox.textContent = data.error || 'City not found!';
-          alertBox.classList.remove('d-none');
-        }
-      } catch (err) {
-        weatherResult.classList.add('d-none');
-        alertBox.textContent = 'Error fetching weather data!';
-        alertBox.classList.remove('d-none');
-      }
-    });
-
-    saveBtn.addEventListener('click', async () => {
-      if (!currentCity) return;
-      alertBox.classList.add('d-none');
-      successBox.classList.add('d-none');
-      try {
-        const res = await fetch('/weather/api/weather', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ city: currentCity })
-        });
-        const data = await res.text();
-        if (res.ok) {
-          successBox.textContent = data;
-          successBox.classList.remove('d-none');
-          setTimeout(loadRecords, 500);
-        } else {
-          alertBox.textContent = data;
-          alertBox.classList.remove('d-none');
-        }
-      } catch (err) {
-        alertBox.textContent = 'Error saving weather data!';
-        alertBox.classList.remove('d-none');
-      }
-    });
-
-    async function loadRecords() {
-      try {
-        const res = await fetch('/weather/all');
-        const records = await res.json();
-        recordsTableBody.innerHTML = '';
-        if (!Array.isArray(records) || records.length === 0) {
-          recordsTableBody.innerHTML = '<tr><td colspan="4" class="text-center">No records found.</td></tr>';
-          return;
-        }
-        records.forEach(rec => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${rec.city}</td>
-            <td>${rec.temperature}</td>
-            <td>${rec.description}</td>
-            <td>${new Date(rec.searchedAt).toLocaleString()}</td>
-          `;
-          recordsTableBody.appendChild(row);
-        });
-      } catch {
-        recordsTableBody.innerHTML = '<tr><td colspan="4" class="text-center">Failed to load records</td></tr>';
+    function toggleView() {
+      if (searchSection.style.display === 'none') {
+        searchSection.style.display = 'block';
+        dashboardSection.style.display = 'none';
+      } else {
+        searchSection.style.display = 'none';
+        dashboardSection.style.display = 'block';
+        fetchSavedWeather();
       }
     }
 
-    downloadBtn.addEventListener('click', async () => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const city = cityInput.value.trim();
+      if (!city) return;
+
       try {
-        const res = await fetch('/weather/all');
-        const records = await res.json();
-        let csv = 'City,Temperature (°C),Description,Searched At\n';
-        records.forEach(rec => {
-          csv += `"${rec.city}",${rec.temperature},"${rec.description}","${new Date(rec.searchedAt).toLocaleString()}"\n`;
-        });
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'weather_records.csv';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      } catch {
-        alert('Failed to download records');
+        // Updated route to match routes.js: GET /weather/:city
+        const res = await fetch(`/weather/${city}`);
+        const data = await res.json();
+
+        if (data.error) {
+          weatherResult.innerHTML = `<div class="alert alert-danger">❌ ${data.error}</div>`;
+        } else {
+          const temp = data.main.temp;
+          const condition = data.weather[0].main;
+          document.body.style.backgroundImage = `url('assets/images/${getBackgroundImage(condition)}')`;
+
+          weatherResult.innerHTML = `
+            <div class="city-card text-center">
+              <h4>🌍 ${city.toUpperCase()}</h4>
+              <h5>🌡️ ${temp}°C</h5>
+              <p>🌤️ ${condition}</p>
+              <button onclick="saveWeather('${city}', ${temp}, '${condition}')" class="btn btn-success mt-2">Save Weather</button>
+            </div>`;
+        }
+      } catch (err) {
+        weatherResult.innerHTML = `<div class="alert alert-danger">❌ Server Error. Please check the city name and server status.</div>`;
       }
     });
 
-    window.addEventListener('DOMContentLoaded', loadRecords);
+    function getBackgroundImage(condition) {
+      const weatherMap = {
+        Clear: 'sunny.jpg',
+        Clouds: 'cloudy.jpg',
+        Rain: 'rainy.jpg',
+        Drizzle: 'rainy.jpg',
+        Thunderstorm: 'storm.jpg',
+        Snow: 'snow.jpg',
+        Mist: 'foggy.jpg',
+        Fog: 'foggy.jpg',
+        Haze: 'foggy.jpg'
+      };
+      return weatherMap[condition] || 'default.jpg';
+    }
+
+    async function saveWeather(city, temp, condition) {
+      try {
+        // Updated route to match routes.js: POST /api/weather
+        await fetch('/api/weather', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ city, temp, condition })
+        });
+        alert('✅ Weather saved!');
+      } catch {
+        alert('❌ Failed to save weather');
+      }
+    }
+
+    async function fetchSavedWeather() {
+  try {
+    const res = await fetch('/all');
+    const data = await res.json();
+
+    if (Array.isArray(data) && data.length > 0) {
+      savedRecords.innerHTML = data.map(entry => `
+        <div class="city-card">
+          📍 <strong>${entry.city}</strong><br>
+          🌡️ ${entry.temperature}°C<br>
+          🌤️ ${entry.description}<br>
+          🕒 ${new Date(entry.searchedAt).toLocaleString()}
+        </div>
+      `).join('');
+    } else {
+      savedRecords.innerHTML = `<div class="alert alert-warning">No records found.</div>`;
+    }
+  } catch (err) {
+    savedRecords.innerHTML = `<div class="alert alert-danger">Failed to load records</div>`;
+  }
+}
+
   </script>
 </body>
 </html>
